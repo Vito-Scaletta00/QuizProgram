@@ -96,7 +96,10 @@ def main():
         for number, quiz in enumerate(quizzes, start=1): #counts through quizzes, assigning a number to each
             print (f"{number}. {quiz.name}")
 
-        quizChoice = input("Choose a quiz by entering the number: ")
+        quizChoice = input("Choose a quiz by entering the number or enter q to quit: ")
+        if quizChoice.lower() == "q":
+            print("quitting")
+            break
 
         try: # compares quizIndex to quizChoice and creates an exception for error handling if condition is not met
             quizIndex = int(quizChoice) - 1
