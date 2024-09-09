@@ -23,29 +23,44 @@ def load_quizData(quizFile): #handles line formatting and assigning the varibles
     with open(quizFile) as file:
         for line in file:
             splitQuiz = line.strip().split(';') #strips whitespace and splits each line at the semi-colon
-            question = splitQuiz[0] #first index of splipresenting the tQuiz (question)
-            answer = splitQuiz[1:-1] #starts from second index (potential answer) of splitQuiz and stops one before the last index (correct answer)
+            question = splitQuiz[0] #first index of split presenting the tQuiz (question)
+            answer = splitQuiz[1].split(',') #starts from second index (potential answer) of splitQuiz and stops one before the last index (correct answer)
             correctAnswer = splitQuiz[-1]#Last index (answer)
             quizData.append((question, answer, correctAnswer))
     return quizData
 
-def runQuiz(quizData): #untested, should run the quiz
+def runQuiz(quizData): #idk what this fucking does anymore
     score = 0
     userAnswers = []
 
-    for question, answer, correctAnswer in quizData:
+    for question, answers, correctAnswer in quizData:
         print ("\n" + question)
-        for i, answer in enumerate(answer):
-            print(f"{i+1}. {answer}")
-        userAnswer = input("Enter the number of your answer: ")
 
-        if answer[int(userAnswer) - 1] == correctAnswer:
-            print("Correct!")
-            score += 1
-        else:
-            print("Incorrect!")
+        for i, answer in enumerate(answers): #numbers each question
+            print(f"{i+1}. {answer}")
         
-        userAnswers.append(userAnswer)
+        while True: #loop handles answer input, checking correct and incorrect answers, and handling numbers outside of range
+            userAnswer = input("Enter the number of your answer: ")
+
+            if userAnswer.isdigit():
+                if int(userAnswer) <= 0:
+                    print("Invalid number, try again")
+                    continue
+                elif int(userAnswer) > len(answers):
+                    print("Invalid number, try again")
+                    continue
+                userAnswers.append(userAnswer)
+                if userAnswer.strip() == correctAnswer.strip(): #strips to make sure they're the same (takes into account formatting errors)
+                    print("Correct!")
+                    score += 1
+                else:
+                    print("Incorrect!")
+                break
+            else:
+                print("Invalid input, please enter a number")
+                continue
+        
+
     return score, userAnswers
 
 def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers, percentage):
@@ -55,7 +70,7 @@ def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers,
     
     with open(outputPath, 'w') as file:
         file.write(f"\nQuiz {quizFile}")
-        file.write(f"\nName: {userName}")
+        file.write(f"\nName: {userName}")                           #Generates the output file
         file.write(f"\nID: {userID}")
         file.write(f"\nCorrect Answers: {score}/{totalQuestions}")
         file.write(f"\nPercentage: {percentage}")
@@ -97,12 +112,14 @@ def main():
 
         totalQuestions = len(quizData)
         percentage = (score / totalQuestions) * 100
-        print (f"\nQuiz completed! You scored {score}/{totalQuestions}")
+        print (f"\nQuiz completed! You scored {score}/{totalQuestions} You got {percentage} percent correct!")
 
-        writeResults(quizFile,userName,userID,score,totalQuestions,userAnswers, percentage)
-    
+        writeResults(quizFile,userName,userID,score,totalQuestions,userAnswers, percentage )
 
+        retry = input("\nDo you want to quit or attempt another quiz? (q to quit, any key to continue): ")
+        if retry.lower() == "q":
+            print ("quitting")
+            break
 
-    
 
 main()
