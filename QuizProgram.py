@@ -29,7 +29,7 @@ def load_quizData(quizFile): #handles line formatting and assigning the varibles
             quizData.append((question, answer, correctAnswer))
     return quizData
 
-def runQuiz(quizData): #idk what this fucking does anymore
+def runQuiz(quizData): #Handles the formatting of questions for display, answer input, and scoring
     score = 0
     userAnswers = []
 
@@ -39,7 +39,7 @@ def runQuiz(quizData): #idk what this fucking does anymore
         for i, answer in enumerate(answers): #numbers each question
             print(f"{i+1}. {answer}")
         
-        while True: #loop handles answer input, checking correct and incorrect answers, and handling numbers outside of range
+        while True: #loop handles answer input, checking correct and incorrect answers, and handling numbers/characters outside of range
             userAnswer = input("Enter the number of your answer: ")
 
             if userAnswer.isdigit():
@@ -63,7 +63,7 @@ def runQuiz(quizData): #idk what this fucking does anymore
 
     return score, userAnswers
 
-def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers, percentage):
+def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers, percentage): #Handles outputting to a text file located in /quizResults 
     quizName = quizFile.stem #removes .txt extension from the filename
     outputFilename = f"{quizName}_{userName}_results.txt" #sets the output filename to the Quiz Name + userName
     outputPath = resultsPath / outputFilename
@@ -80,7 +80,7 @@ def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers,
 
 
 
-def main():
+def main(): #handles literally everything else, userName/ID, calls all the other functions
     print ("Welcome to Quiz Program")
     userName = input(str("Please Type Your Name: "))
     userID = input(str("Please Type Your Student ID: ")) #grabs and assigns userName/ID to variables
@@ -89,7 +89,7 @@ def main():
         quizzes = get_availableQuizzes() #calls the get_availableQuizzes function and assigns the returned quizList variable to quizzes
 
         if not quizzes:
-            print("No quizzes available")
+            print("No quizzes available, add a properly formatted quiz to /quizFiles/ to get started! \nView correct format here: https://github.com/Vito-Scaletta00/QuizProgram/blob/main/README.md") #tells the user to add quizzes
             break
 
         print("\n Available quizzes:")
