@@ -83,7 +83,7 @@ def writeResults(quizFile, userName, userID, score, totalQuestions, userAnswers,
 def main(): #handles literally everything else, userName/ID, calls all the other functions
     print ("Welcome to Quiz Program")
     userName = input(str("Please Type Your Name: "))
-    userID = input(str("Please Type Your Student ID: ")) #grabs and assigns userName/ID to variables
+    userID = input(str("Please Type Your Student ID: "))
     
     while True:
         quizzes = get_availableQuizzes() #calls the get_availableQuizzes function and assigns the returned quizList variable to quizzes
